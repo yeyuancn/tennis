@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html ng-app="YuanTennis">
+<head>
+  <title>Join the tennis league! Register yourself as a player</title>
+  <meta name="description" content="Register yourself as a player, start playing tennis league and have fun.">
+  <meta property="og:image" content="http://www.justtennisleague.com/images/icon.jpg">
+  <link rel="image_src" href="http://www.justtennisleague.com/images/icon.jpg">
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular-cookies.js"></script>
+  <script type="text/javascript" src="javascript/google_analytics.js" async></script>
+
+  <script src="javascript/app.js?v1"></script>
+  <script src="javascript/register.js?v2"></script>
+</head>
+
+<body>
+
+<script type="text/javascript" src="javascript/logo_static.js"></script>
+
+<div class="container" ng-controller="registerController">
+
+  <table width="800px" align="center">
+    <tr>
+      <td align="right">
+        <div class="clearfix" ng-show="isCreateMode">
+          <nav>
+            <ul class="nav nav-pills pull-right">
+              <li><a href="index.html">How it Works</a></li>
+              <li class="active"><a href="createLeague.html">Start a League</a></li>
+              <li><a href="joinLeague.html">Join a League</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="clearfix" ng-hide="isCreateMode">
+          <nav>
+            <ul class="nav nav-pills pull-right">
+              <li><a href="index.html">How it Works</a></li>
+              <li><a href="createLeague.html">Start a League</a></li>
+              <li class="active"><a href="joinLeague.html">Join a League</a></li>
+            </ul>
+          </nav>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+
+  <p></p>
+
+
+
+
+
+  <table width="800px" align="center">
+    <tr>
+      <td colspan="2">
+        <div ng-show="isCreateMode">
+          <p></p>
+          <h3>Created league '{{ leagueName }}', Register yourself or login</h3>
+        </div>
+        <div ng-hide="isCreateMode">
+          <p></p>
+          <h3>Joining league '{{ leagueName }}', Register yourself or login</h3>
+        </div>
+        <hr  style='margin-bottom:0px' />
+      </td>
+    </tr>
+    <tr>
+      <td style="min-width: 540px;" valign="top">
+      <form class="form-horizontal">
+          <p></p>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">First Name:</label>
+
+            <div class="col-sm-8">
+              <input type="text" ng-model="fName" placeholder="First Name">
+              <div class="redsmall" ng-show="error_firstname_length">First name cannot exceed 18 characters</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Last Name:</label>
+
+            <div class="col-sm-8">
+              <input type="text" ng-model="lName" placeholder="Last Name">
+              <div class="redsmall" ng-show="error_lastname_length">Last name cannot exceed 18 characters</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">NTRP Level:</label>
+
+            <div class="col-sm-8">
+              <select ng-model="level" required="true"
+                      ng-options="option as option for option in ['PRO','5.5', '5.0', '4.5', '4.0', '3.5', '3.0']"> </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Email:</label>
+            <div class="col-sm-8">
+              <input type="text" ng-model="email" placeholder="Email">
+              <div class="redsmall" ng-show="error_email">Invalid email address</div>
+              <div class="redsmall" ng-show="error_email_length">Email address cannot exceed 38 characters</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Password:</label>
+            <div class="col-sm-8">
+              <input type="password" ng-model="passwd1" placeholder="Password">
+              <div class="redsmall" ng-show="error_passwd_length">Password length need to be more than six </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Repeat Password:</label>
+            <div class="col-sm-8">
+              <input type="password" ng-model="passwd2" placeholder="Repeat Password">
+              <div class="redsmall" ng-show="error_passwd_match">Passwords do not match </div>
+            </div>
+          </div>
+      <div id="catchit-div" class="form-group">
+        <label class="col-sm-4 control-label">Leave empty:</label>
+        <div class="col-sm-8">
+          <input type="text" ng-model="bot" placeholder="Anti-spam, leave empty">
+        </div>
+      </div>
+    <hr>
+
+    <button class="btn btn-success" ng-disabled="error_email || error_passwd_match || error_passwd_length || error_firstname_length
+    || error_lastname_length || error_email_length || incomplete" ng-click="registerPlayer()">
+      <span class="glyphicon glyphicon-save"></span> Create {{ user_role }}
+    </button>
+
+    </form>
+
+    <div class="red" ng-show="failedReg">{{ errorMessage }}</div>
+
+    </td>
+
+    <td align="right" valign="top">
+        <table>
+          <tr>
+            <td style="min-width: 240px; max-width: 240px; background-color: #dcdcdc">
+                  <div ng-show="isCreateMode">
+                    <h4 style="color:darkgreen">Had an account?<br>Login to Own League</h4>
+                  </div>
+                  <div ng-hide="isCreateMode">
+                    <h4 style="color:darkgreen">Had an account?<br>Login to Join League</h4>
+                  </div>
+                <hr>
+                <form class="form-horizontal">
+
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <input type="text" ng-model="login_email" placeholder="Email" size="22">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <input type="password" ng-model="login_passwd" placeholder="Password" size="22">
+                    </div>
+                  </div>
+                  <hr>
+
+                  <button class="btn btn-success" ng-click="loginPlayer()">
+                    <span class="glyphicon glyphicon-save"></span> Login
+                  </button>
+
+                  <p class="bluesmall" style="text-align: right"><a href="resetPasswordRequest.html">Forgot password?</a></p>
+
+                </form>
+              <div class="redsmall" ng-show="login_error"><br>{{ login_errorMessage }}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+
+    </tr>
+  </table>
+
+</div>
+
+<div class="footer">
+  @Copyright Just Tennis League Inc 2016 &nbsp;&nbsp;&nbsp;&nbsp; <a href="about_static.html">About us</a>
+</div>
+
+</body>
+</html>

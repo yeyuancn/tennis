@@ -1,0 +1,16 @@
+Dear [name], <br><br>
+
+How are you? This is Peter from <a href="http://www.justtennisleague.com" target="_blank">justtennisleague.com</a>, I
+ want to introduce you to a website that could be useful to your tennis club.
+<br><br>
+Have you organized a league play for your club members? Did you ever want an online tool to help you
+manage the match results, and analyze the data for you? We built a website for the tennis community and we believe
+your club could use it! The best part of it: it is absolutely free!
+<br><br>
+Please check out our website <a href="http://www.justtennisleague.com" target="_blank">justtennisleague.com</a> or <a
+ href="https://www.youtube.com/watch?v=RyySa9gQiuk" target="_blank">Youtube Video</a> for details. We would love to
+ talk to you if you have any interest or question. Email back or Send us feedback online.
+<br><br>
+
+Regards,<br>
+Peter @ <a href="http://www.justtennisleague.com" target="_blank">justtennisleague.com</a>

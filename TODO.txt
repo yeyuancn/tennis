@@ -1,0 +1,37 @@
+
+disable delete self or owner in manage players page - done
+allow player to be admin.  - done
+Add isOwner, isAdmin properties.   - done
+
+create manageLeague page, let it be the landing page after login. - done
+create a disclaimer show current # of players and let player invite more friends. - done
+Non-admin user should not be in read only mode in manage league page - done
+
+
+Support delete message properly. -- done
+
+Add Robot check for create league and join league. - done
+
+
+Non-admin user should only be able to edit self account. - done
+An owner account should always be active and admin. - done
+
+Check how inactive user affect to the ranking and reports -- done
+
+
+Support seasons in ranking and result table - done
+
+Support season management - done
+
+Email validator    - done
+password length validator - done
+
+
+Better UI in message view page (inbox/outbox)  - done
+Support a new popup window for match history per player. - done
+Work on About page. - done
+SEO title and description. - done
+Create How it works page as the index page - done
+Put login page to each top page (index, create league and join league) - done
+Social media -- done
+Create a link to the youtube intro video in the page. -- done

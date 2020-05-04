@@ -1,0 +1,79 @@
+http://162.249.2.90/
+
+Password: V..1
+mysql: root/V..1
+
+Private Server information:
+root@justtennisleague:~# lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 14.04.1 LTS
+Release:	14.04
+Codename:	trusty
+
+
+Apache START/STOP
+sudo /etc/init.d/apache2 restart
+
+Apache Config
+/etc/apache2/apache2.conf
+
+Doc Root
+/var/www/html
+
+Apache Proxy Requirement: (seems only needed once)
+Must run this before apache start: a2enmod proxy_http
+
+Then add these to default site under "sites-available" folder.
+  ProxyPass / http://localhost:8281/tennis/
+  ProxyPassReverse / http://localhost:8281/tennis/
+
+Dual hosting for justtennisleague.com and qqvivian.com
+    Under /etc/apache2/sites-available
+    Default conf file 000-default.conf
+    <VirtualHost *:80>
+            ServerName justtennisleague.com
+            ServerAlias www.justtennisleague.com
+    <VirtualHost>
+    Additiona conf file qqvivian.conf for qqvivian.com
+    <VirtualHost *:80>
+            DocumentRoot /var/www/qqvivian
+            ServerName qqvivian.com
+            ServerAlias www.qqvivian.com
+    <VirtualHost>
+    Enable each sites
+        sudo a2ensite 000-default.conf
+        sudo a2ensite qqvivian.conf
+    Restart apache
+        sudo service apache2 reload
+
+
+
+Change Server.xml for tomcat server to using proxy 80 on justtennisleague.com
+
+Added these for Startup tasks using crontab
+@reboot /root/start_script.sh
+
+
+scp -P 7822 tennis.war root@justtennisleague.com:~/
+ssh root@justtennisleague.com -p 7822
+
+JAVA INSTALL
+/usr/local/java
+
+TOMCAT INSTALL (cdtomcat)
+/usr/local/tomcat/apache-tomcat-9.0.0.M4
+
+MYSQL INSTALL
+service mysql restart (stop/start)
+/etc/mysql
+
+To allow mysql access, did these, need to revert when in PROD mode:
+#bind-address           = 127.0.0.1   (remove comment)
+
+GRANT ALL PRIVILEGES ON tennis.* TO 'yye'@'%' IDENTIFIED BY '252525';
+
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM yye;
+
+
+

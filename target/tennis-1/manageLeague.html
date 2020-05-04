@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html ng-app="YuanTennis">
+<head>
+  <title>Start Your Own Tennis League -- Manage your league.</title>
+  <meta name="description" content="Manage the your tennis league information">
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-cookies.js"></script>
+  <script type="text/javascript" src="javascript/google_analytics.js" async></script>
+
+  <script src="javascript/app.js?v1"></script>
+  <script src="javascript/manageLeague.js?v1"></script>
+</head>
+
+<body>
+
+<script type="text/javascript" src="javascript/logo.js"></script>
+
+<div class="container">
+
+
+  <table width="830px" align="center">
+    <tr>
+      <td style ="padding-top: 0px; padding-bottom: 0px;">
+        <div ng-controller="sessionController">
+          <p class="bluesmall" style="text-align: right">Logged in as <a href="manageAccount.html">{{ loginEmail }}</a>&nbsp;&nbsp;</p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li class="active"><a href="manageLeague.html">Manage League</a></li>
+            <li><a href="manageSeasons.html">Manage Seasons</a></li>
+            <li><a href="managePlayers.html">Manage Players</a></li>
+            <li><a href="matches.html">Matches</a></li>
+            <li><a href="ranking.html">Ranking</a></li>
+            <li><a href="message.html">Messages</a></li>
+            <li><a href="logout.html">Logout</a></li>
+          </ul>
+        </nav>
+      </td>
+    </tr>
+  </table>
+  <p></p>
+
+  <table width="800px" align="center">
+    <tr>
+      <td>
+        <div ng-controller="manageLeagueController">
+          <form class="form-horizontal">
+            <p></p>
+            <h3>Manage League</h3>
+            <hr/>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">League Name:</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="leagueName" placeholder="League Name"
+                       ng-disabled="notAdmin">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">City:</label>
+              <div class="col-sm-9">
+                <input type="text" ng-model="city" placeholder="City" ng-disabled="notAdmin">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">State:</label>
+              <div class="col-sm-9">
+                <select ng-model="state"
+                        ng-options="state.abbreviation as (state.name) for state in stateList"
+                        ng-disabled="notAdmin">
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Security Mode:</label>
+              <div class="col-sm-9">
+                <input type="radio" ng-model="leagueMode" value="searchable" ng-disabled="notAdmin">
+                Searchable (anyone can join) &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" ng-model="leagueMode" value="invitation" ng-disabled="notAdmin">
+                Invitation only
+              </div>
+            </div>
+            <hr>
+
+            <button class="btn btn-success" ng-disabled="incomplete || notAdmin"
+                    ng-click="saveChanges()">
+              <span class="glyphicon glyphicon-save"></span> Save Changes
+            </button>
+            <p></p>
+            <div class="notes" ng-show="notAdmin">League Info is read only for non-admin user.</div>
+            <div class="red" ng-show="failedManageLeague">{{ errorMessage }}</div>
+          </form>
+
+          <div class="blue" ng-show="savedChange">Successfully updated league.</div>
+
+          <p></p>
+          <div class="green">
+            <h3>Currently there are {{ playerCount }} players in the league.</h3>
+            <p></p>
+            <h4>Invite more players to the league by sharing this link:
+                <a ng-href="{{ getDirectURL() }}">
+                  Join League
+                </a>
+                <br><br>
+                Or share the link on your social media page
+                <a target="_blank" ng-href="{{ getTwitterURL() }}">
+                    <img src="./images/twitter.png"  style="width: 45px; height: 45px"/></a>
+
+                <a target="_blank" ng-href="{{ getFacebookURL() }}">
+                    <img src="./images/facebook.png"  style="width: 45px; height: 45px"/></a>
+
+                <a target="_blank" ng-href="{{ getGooglePlusURL() }}">
+                    <img src="./images/googleplus.png"  style="width: 45px; height: 45px"/></a>
+
+                <a target="_blank" ng-href="{{ getLinkedInURL() }}">
+                    <img src="./images/linkedin.png"  style="width: 45px; height: 45px"/></a>
+            </h4>
+          </div>
+
+        </div>
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+<div class="footer">
+  @Copyright Just Tennis League Inc 2016 &nbsp;&nbsp;&nbsp;&nbsp; <a href="about.html">About us</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html ng-app="YuanTennis" xmlns:background-color="http://www.w3.org/1999/xhtml">
+<head>
+
+    <title>Welcome to JustTennisLeague.com!</title>
+    <meta name="description" content="Start your own tennis league, for tennis club, school team or friends. Schedule matches at your own pace and record result here.">
+    <meta property="og:image" content="http://www.justtennisleague.com/images/icon.jpg">
+    <link rel="image_src" href="http://www.justtennisleague.com/images/icon.jpg">
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular-cookies.js"></script>
+    <script type="text/javascript" src="javascript/google_analytics.js" async></script>
+
+    <script src="javascript/app.js?v1"></script>
+    <script src="javascript/login.js?v1"></script>
+</head>
+
+<body>
+
+<script type="text/javascript" src="javascript/logo_static.js"></script>
+
+<div class="container">
+
+    <table width="800px" align="center">
+        <tr>
+            <td align="right">
+                <nav>
+                    <ul class="nav nav-pills pull-right">
+                        <li class="active"><a href="index.html">How it Works</a></li>
+                        <li><a href="createLeague.html">Start a League</a></li>
+                        <li><a href="joinLeague.html">Join a League</a></li>
+                    </ul>
+                </nav>
+            </td>
+        </tr>
+    </table>
+
+    <p></p>
+
+    <table width="800px" align="center">
+        <tr>
+            <td style="min-width: 550px; white-space:nowrap" valign="top">
+                <p></p>
+                <h3>How it Works</h3>
+                <hr>
+                <p style="font-size: 16pt;"><img src="./images/check.png"  style="width: 25px; height: 25px"/> <a class="name" href="./createLeague.html">Create/register</a> your tennis league as league owner. </p>
+                <p style="font-size: 16pt;"><img src="./images/check.png"  style="width: 25px; height: 25px"/> Invite players to join the league with link or <a class="name" href="./joinLeague.html">search</a>.</p>
+                <p style="font-size: 16pt;"><img src="./images/check.png"  style="width: 25px; height: 25px"/> League players enter match results and see the stats.</p>
+                <p style="font-size: 16pt;"><img src="./images/check.png"  style="width: 25px; height: 25px"/> League players communicate with others via messages.</p>
+                <p style="font-size: 16pt;"><img src="./images/check.png"  style="width: 25px; height: 25px"/> League owner manages the league, seasons, players info.</p>
+                <p style="font-size: 16pt;"><img src="./images/check.png"  style="width: 25px; height: 25px"/> Enjoy tennis, the service on this site is absolutely free!</p>
+                <p style="font-size: 16pt;"><img src="./images/check.png"  style="width: 25px; height: 25px"/> Questions? Check out our <a class="name" href="https://www.youtube.com/watch?v=RyySa9gQiuk">Introduction Video on YouTube</a>.</p>
+
+            </td>
+            <td align="right" valign="top">
+                <table>
+                    <tr>
+                        <td style="min-width: 200px; white-space:nowrap; background-color: #dcdcdc">
+                            <div ng-controller="loginController">
+                                <p></p>
+                                <h4 style="color:darkgreen">Existing player login</h4>
+                                <hr>
+                                <form class="form-horizontal">
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="text" ng-model="login_email" placeholder="Email" size="24">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="password" ng-model="login_passwd" placeholder="Password" size="24">
+                                        </div>
+                                    </div>
+                                    <hr>
+
+                                    <button class="btn btn-success" ng-click="login()">
+                                        <span class="glyphicon glyphicon-save"></span> Login
+                                    </button>
+                                    <p class="bluesmall" style="text-align: right"><a href="resetPasswordRequest.html">Forgot password?</a></p>
+                                </form>
+
+                                <div class="red" ng-show="login_error">{{ login_errorMessage }}</div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+                <a target="_blank" href="http://twitter.com/share?text=Check%20out%20this%20site%20for%20Tennis%20League&url=http://www.justtennisleague.com">
+                    <img src="./images/twitter.png"  style="width: 45px; height: 45px"/></a>
+
+                <a target="_blank" href="http://www.facebook.com/sharer.php?u=http://www.justtennisleague.com">
+                    <img src="./images/facebook.png"  style="width: 45px; height: 45px"/></a>
+
+                <a target="_blank" href="https://plus.google.com/share?text=Check%20out%20this%20site%20for%20Tennis%20League&url=http://www.justtennisleague.com">
+                    <img src="./images/googleplus.png"  style="width: 45px; height: 45px"/></a>
+
+                <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=http://www.justtennisleague.com&title=Check%20out%20this%20site%20for%20Tennis%20League&summary=&source=">
+                    <img src="./images/linkedin.png"  style="width: 45px; height: 45px"/></a>
+
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+<div class="footer">
+    @Copyright Just Tennis League Inc 2016 &nbsp;&nbsp;&nbsp;&nbsp; <a href="about_static.html">About us</a>
+</div>
+
+</body>
+</html>

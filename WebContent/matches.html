@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html ng-app="YuanTennis">
+<head>
+  <title>Start Your Own Tennis League -- Manage all matches results online here.</title>
+  <meta name="description" content="Manage tennis matches results online">
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-cookies.js"></script>
+  <script type="text/javascript" src="javascript/google_analytics.js" async></script>
+
+  <script src="javascript/app.js?v1"></script>
+  <script src="javascript/match.js?v1"></script>
+</head>
+
+<body>
+
+<script type="text/javascript" src="javascript/logo.js"></script>
+
+<div class="container">
+
+  <table width="830px" align="center">
+    <tr>
+      <td style ="padding-top: 0px; padding-bottom: 0px;">
+        <div ng-controller="sessionController">
+          <p class="bluesmall" style="text-align: right">Logged in as <a href="manageAccount.html">{{ loginEmail }}</a>&nbsp;&nbsp;</p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li><a href="manageLeague.html">Manage League</a></li>
+            <li><a href="manageSeasons.html">Manage Seasons</a></li>
+            <li><a href="managePlayers.html">Manage Players</a></li>
+            <li class="active"><a href="matches.html">Matches</a></li>
+            <li><a href="ranking.html">Ranking</a></li>
+            <li><a href="message.html">Messages</a></li>
+            <li><a href="logout.html">Logout</a></li>
+          </ul>
+        </nav>
+      </td>
+    </tr>
+  </table>
+
+  <p></p>
+
+  <div ng-controller="matchController">
+  <table width="800px" align="center">
+
+    <tr>
+      <td>
+          <p></p>
+          <h3>Submit Match Result</h3>
+          <hr/>
+          <table class="table table-striped" align="left" style="width: 700px">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th style="min-width: 60px">Set 1</th>
+                    <th style="min-width: 60px">Set 2</th>
+                    <th style="min-width: 60px">Set 3</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td><p class="black">You:</p></td>
+                    <td><p class="blue">{{fName}} {{lName}}</p></td>
+
+                    <td>
+                      <p class="blue">
+                        <select ng-options="o as o for o in scoreRange" ng-model="score_you1"/>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="blue">
+                        <select ng-options="o as o for o in scoreRange" ng-model="score_you2"/>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="blue">
+                        <select ng-options="o as o for o in scoreRange" ng-model="score_you3"/>
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><p class="black">Opponent:</p></td>
+                    <td>
+                      <p class="blue">
+                        <select ng-options="player.firstName + ' ' + player.lastName for player in players"
+                                ng-model="opponent" required="true" style ="max-width: 160px"/>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="blue">
+                        <select ng-options="o as o for o in scoreRange" ng-model="score_opp1"/>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="blue">
+                        <select ng-options="o as o for o in scoreRange" ng-model="score_opp2"/>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="blue">
+                        <select ng-options="o as o for o in scoreRange" ng-model="score_opp3"/>
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                      <td><p class="black">Match Note:</p></td>
+                      <td colspan="4">
+                          <input size="50" type="text"  ng-model="matchMemo" placeholder="Optional notes about the match" />
+                          </input>
+                      </td>
+                  </tr>
+                  <tr>
+                    <td><p class="black">Match Date:</p></td>
+                    <td>
+                      <input size="10" type="text"  ng-model="matchDate" placeholder="mm/dd/yyyy" required />
+                      <div>
+                        <span class="redsmall" ng-show="dateRequired">Date field is required</span>
+                        <span class="redsmall" ng-show="dateInvalid">Not a valid date! (mm/dd/yyyy)</span>
+                      </div>
+                      </input>
+                    </td>
+                    <td colspan=3 >
+                      <button class="btn btn-success" ng-disabled="dateRequired || dateInvalid || oppRequired" ng-click="submit()">
+                        <span class="glyphicon glyphicon-save"></span> Submit Score
+                      </button>
+                      <div class="redsmall" ng-show="sendError">{{ errorMessage }}</div>
+                      <div class="bluesmall" ng-show="sendSuccess">Score has been submitted</div>
+                    </td>
+                  </tr>
+                  </tbody>
+          </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+          <hr/>
+          <h3>Past Match Results</h3>
+          <span class="pull-right">
+
+                <input type="checkbox" ng-model="showMemo">&nbsp;Show notes &nbsp;&nbsp;&nbsp;
+                <select ng-model="seasonId"
+                        ng-options="season.id as (season.name) for season in seasons"
+                        ng-change="reload()">
+                </select>
+          </span>
+          <hr/>
+          <table ng-hide="showMemo" class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th>Winner</th>
+                    <th >Opponent</th>
+                    <th>Match Score</th>
+                    <th>Set1</th>
+                    <th>Set2</th>
+                    <th>Set3</th>
+                    <th>Played</th>
+                    <th>Recorded</th>
+                    <th>Remove</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="r in matchResults">
+                    <td style="max-width: 150px"><p class="bluesmall"><img ng-show="{{r.enterByWinner}} == 1" ng-src="./images/editor.png"  style="width: 12px; height: 12px"/>
+                      <a class="name" href="#" ng-click="popup(r.winnerId, r.winnerFName, r.winnerLName)"> {{ r.winnerFName }} {{ r.winnerLName }} </a></p>
+                    </td>
+                    <td style="max-width: 150px"><p class="bluesmall"><img ng-show="{{r.enterByWinner}} == 0" ng-src="./images/editor.png"  style="width: 12px; height: 12px"/>
+                      <a class="name" href="#" ng-click="popup(r.loserId, r.loserFName, r.loserLName)"> {{ r.loserFName }} {{ r.loserLName }} </a></p>
+                    </td>
+                    <td><p class="bluesmall">{{ r.matchScore }}</p></td>
+                    <td><p class="bluesmall">{{ r.set1Score }}</p></td>
+                    <td><p class="bluesmall">{{ r.set2Score }}</p></td>
+                    <td><p class="bluesmall">{{ r.set3Score }}</p></td>
+                    <td><p class="bluesmall">{{ r.matchDate | date:'M/d/yyyy'}}</p></td>
+                    <td><p class="bluesmall">{{ r.recordTime | date:'M/d/yyyy HH:mm'}}</p></td>
+                    <td style="text-align: center">
+                      <a href="#" ng-click="deleteResult(r.id)" ng-show="canDelete(r.winnerId, r.loserId)">
+                        <span class="glyphicon glyphicon-remove"></span>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+           </table>
+          <table ng-show="showMemo" class="table table-striped">
+              <thead>
+              <tr>
+                  <th>Winner</th>
+                  <th >Opponent</th>
+                  <th>Match Score</th>
+                  <th>Set1</th>
+                  <th>Set2</th>
+                  <th>Set3</th>
+                  <th>Played</th>
+                  <th>Notes</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="r in matchResults">
+                  <td style="max-width: 150px"><p class="bluesmall"><img ng-show="{{r.enterByWinner}} == 1" ng-src="./images/editor.png"  style="width: 12px; height: 12px"/>
+                      <a class="name" href="#" ng-click="popup(r.winnerId, r.winnerFName, r.winnerLName)"> {{ r.winnerFName }} {{ r.winnerLName }} </a></p>
+                  </td>
+                  <td style="max-width: 150px"><p class="bluesmall"><img ng-show="{{r.enterByWinner}} == 0" ng-src="./images/editor.png"  style="width: 12px; height: 12px"/>
+                      <a class="name" href="#" ng-click="popup(r.loserId, r.loserFName, r.loserLName)"> {{ r.loserFName }} {{ r.loserLName }} </a></p>
+                  </td>
+                  <td><p class="bluesmall">{{ r.matchScore }}</p></td>
+                  <td><p class="bluesmall">{{ r.set1Score }}</p></td>
+                  <td><p class="bluesmall">{{ r.set2Score }}</p></td>
+                  <td><p class="bluesmall">{{ r.set3Score }}</p></td>
+                  <td><p class="bluesmall">{{ r.matchDate | date:'M/d/yyyy'}}</p></td>
+                  <td style="min-width:100px; max-width: 150px;"><p class="bluesmall">{{ r.matchMemo }}</p></td>
+              </tr>
+              </tbody>
+          </table>
+      </td>
+    </tr>
+  </table>
+  </div>
+
+
+
+</div>
+
+<div class="footer">
+  @Copyright Just Tennis League Inc 2016 &nbsp;&nbsp;&nbsp;&nbsp; <a href="about.html">About us</a>
+</div>
+</body>
+</html>

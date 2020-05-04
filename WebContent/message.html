@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html ng-app="YuanTennis">
+<head>
+
+  <title>Start Your Own Tennis League -- Players can send and receive message here</title>
+  <meta name="description" content="Manage messages for the players in the league">
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-cookies.js"></script>
+  <script type="text/javascript" src="javascript/google_analytics.js" async></script>
+
+  <script src="javascript/app.js?v1"></script>
+  <script src="javascript/message.js?v1"></script>
+
+</head>
+
+<body>
+
+<script type="text/javascript" src="javascript/logo.js"></script>
+
+<div class="container">
+
+  <table width="830px" align="center">
+    <tr>
+      <td style ="padding-top: 0px; padding-bottom: 0px;">
+        <div ng-controller="sessionController">
+          <p class="bluesmall" style="text-align: right">Logged in as <a href="manageAccount.html">{{ loginEmail }}</a>&nbsp;&nbsp;</p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+      <nav>
+        <ul class="nav nav-pills pull-right">
+        <li><a href="manageLeague.html">Manage League</a></li>
+        <li><a href="manageSeasons.html">Manage Seasons</a></li>
+        <li><a href="managePlayers.html">Manage Players</a></li>
+        <li><a href="matches.html">Matches</a></li>
+        <li><a href="ranking.html">Ranking</a></li>
+        <li class="active"><a href="message.html">Messages</a></li>
+        <li><a href="logout.html">Logout</a></li>
+      </ul>
+      </nav>
+      </td>
+    </tr>
+  </table>
+
+  <p></p>
+  <div ng-controller="messageController">
+  <table width="800px" align="center">
+      <tr>
+         <td>
+          <table width="400px" align="right">
+            <tr>
+              <td align="right">
+                <nav>
+                  <ul class="nav nav-pills pull-right">
+                    <li ng-class="{'active': isInboxActive}" ng-click="switchInbox()"><a href="#">Inbox&nbsp;&nbsp;</a></li>
+                    <li ng-class="{'active': isOutboxActive}" ng-click="switchOutbox()"><a href="#">Sent &nbsp;&nbsp;</a></li>
+                    <li ng-class="{'active': isNewActive}" ng-click="switchNew()"><a href="#">Compose</a></li>
+                  </ul>
+                </nav>
+              </td>
+            </tr>
+          </table>
+         </td>
+      </tr>
+      <tr>
+          <td>
+
+          <div ng-show="isInboxActive">
+            <h4>You've got {{ messages.length }} message(s)</h4>
+            <p><br/></p>
+            <table class="table table-striped">
+              <tbody>
+              <tr ng-repeat="message in messages">
+                <td style="min-width: 160px; max-width: 190px">
+                  From: <a class="name" href="#" ng-click="popup(message.fromPlayerId, message.fromFirstName, message.fromLastName)">
+                          {{ message.fromFirstName }} {{ message.fromLastName }}
+                        </a>
+                  <br/>
+                  <span class="bluesmall">{{ message.messageTime | date:'M/d/yyyy HH:mm:ss' }}</span>
+                </td>
+                <td>
+                  <table width="410px">
+                    <tr>
+                      <td style="max-width: 410px; word-wrap: break-word;">
+                        <p class="bluesmall">{{ message.content }}</p>
+                      </td>
+                    </tr>
+                    <tr ng-show="reply[message.id]">
+                      <td align="center">
+                        <span class="green">Replying to {{ message.fromFirstName }} {{ message.fromLastName }} </span><br/>
+                        <textarea rows="4" cols="45" ng-model="replyContent[message.id]" placeholder="Email content here... Max length is 2000 chars" maxlength="2000"></textarea>
+
+                        <br/>
+                        <button class="btn btn-success" ng-click="sendReply(message.id, message.fromPlayerId)">
+                          <span class="glyphicon glyphicon-save"></span> Send
+                        </button>
+                        &nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-success" ng-click="unreplyMessage(message.id)">
+                          <span class="glyphicon glyphicon-cancel"></span> Cancel
+                        </button>
+                        <div class="redsmall" ng-show="replyError[message.id]">{{ replyErrorMessage[message.id] }}</div>
+                        <div class="bluesmall" ng-show="replySuccess[message.id]">Reply has been sent</div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="right" style="min-width: 220px; max-width: 220px">
+                  <button class="btn btn-success" ng-click="replyMessage(message.id)">
+                    <span class="glyphicon glyphicon-edit"></span> Reply
+                  </button>
+                  &nbsp;
+                  <button class="btn btn-success" ng-click="deleteMessage(message.id)">
+                    <span class="glyphicon glyphicon-remove"></span> Remove
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div ng-show="isOutboxActive">
+            <h4>You've sent {{ messages.length }} message(s)</h4>
+              <p><br/></p>
+            <table class="table table-striped">
+              <tbody>
+              <tr ng-repeat="message in messages">
+                <td style="min-width: 160px; max-width: 190px">
+                  To: <a class="name" href="#" ng-click="popup(message.toPlayerId, message.toFirstName, message.toLastName)">
+                           {{ message.toFirstName }} {{ message.toLastName }}
+                      </a>
+                  <br/>
+                  <span class="bluesmall">{{ message.messageTime | date:'M/d/yyyy HH:mm:ss' }}</span>
+                </td>
+                <td width="500px">
+                  <table>
+                    <tr>
+                      <td style="max-width: 490px; word-wrap: break-word;">
+                        <p class="bluesmall">{{ message.content }}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="right" style="min-width: 120px; max-width: 120px">
+                  <button class="btn btn-success" ng-click="deleteMessage(message.id)">
+                    <span class="glyphicon glyphicon-remove"></span> Remove
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div ng-show="isNewActive">
+            <h4>Click one or more player(s) to send a message</h4>
+            <hr/>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th style="min-width: 60px"><input type="checkbox" ng-change="selectAll()" ng-model="master">&nbsp;All</th>
+                <th>Player</th>
+                <th>Matches Won</th>
+                <th>Matches Lost</th>
+                <th>Match Won%</th>
+                <th>Game Won</th>
+                <th>Game Lost</th>
+                <th>Game Won%</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="p in playerResults">
+                <td><input type="checkbox" ng-model="selected[p.playerId]" ng-disabled="isSameAsUser(p.playerId)"></td>
+                <td style="max-width: 150px">
+                  <p class="bluesmall">
+                    <a class="name" href="#" ng-click="popup(p.playerId, p.firstName, p.lastName)"> {{ p.firstName }} {{ p.lastName }} </a>
+                  </p>
+                </td>
+                <td><p class="bluesmall">{{ p.matchWon }}</p></td>
+                <td><p class="bluesmall">{{ p.matchLost }}</p></td>
+                <td><p class="bluesmall">{{ p.matchWonPercent }}%</p></td>
+                <td><p class="bluesmall">{{ p.gameWon }}</p></td>
+                <td><p class="bluesmall">{{ p.gameLost }}</p></td>
+                <td><p class="bluesmall">{{ p.gameWonPercent }}%</p></td>
+              </tr>
+              </tbody>
+            </table>
+            <table width="680px">
+              <tr>
+                <td>
+                  <h5>Message Content:</h5>
+                  <textarea rows="5" cols="70" ng-model="content" placeholder="Message content here... Max length is 2000 chars" maxlength="2000"></textarea>
+                </td>
+
+                <td style="min-width:150px; max-width: 150px; text-align:center" valign="top">
+                    <br/><br/>
+                  <button class="btn btn-success" ng-click="sendEmail()">
+                    <span class="glyphicon glyphicon-save"></span> Send
+                  </button>
+                  <div class="red" ng-show="sendError">{{ errorMessage }}</div>
+                  <div class="blue" ng-show="sendSuccess">Message Sent</div>
+                </td>
+              </tr>
+            </table>
+
+          </div>
+
+          </td>
+       </tr>
+
+  </table>
+
+    </div>
+</div>
+
+<div class="footer">
+  @Copyright Just Tennis League Inc 2016 &nbsp;&nbsp;&nbsp;&nbsp; <a href="about.html">About us</a>
+</div>
+
+</body>
+</html>
